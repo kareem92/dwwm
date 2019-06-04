@@ -1,0 +1,88 @@
+{% extends 'base.html.twig' %}
+
+{% form_theme form with ['bootstrap_4_layout.html.twig',_self] %}
+
+	{% block title %}modification d'une annonce{% endblock %}
+
+		{% block body %}
+			<div class="container">
+				<h1>Modification de {{ad.title}}</h1>
+
+				{{ form_start(form) }}
+				{{ form_row(form.title,{'label':"Titre de l'annonce", 'attr':{'placeholder':"Titre de l'annonce", 'title':'Titre avec minimum 10 et maximum 50 caractères'}}) }}
+				{{form_row(form.slug,{'label':"Url personnalisée"})}}
+				{{ form_row(form.price,{'label':"Prix", 'attr':{'placeholder':"500€"}}) }}
+				{{ form_row(form.introduction,{'label':"Résumé de l'annonce", 'attr':{'placeholder':""}}) }}
+				{{ form_row(form.content,{'label':"Description de l'annonce", 'attr':{'placeholder':""}}) }}
+				{{ form_row(form.coverImage,{'label':"Image principal ", 'attr':{'placeholder':""}}) }}
+				{{ form_row(form.rooms,{'label':"Nombre de chambres", 'attr':{'placeholder':"3"}}) }}
+				{{ form_row(form.images) }}
+
+				<button type="button" id="add_image" class="btn btn-success"> Ajouter une image </button> <br/> <br/>
+				<button type="submit" class="btn btn-success"> Modifier l'annonce </button> 
+				{{ form_end(form) }}
+
+			</div>
+		{% endblock %}
+
+
+		{% block _annonce_images_entry_row %}
+
+			<div class="row" id="{{id}}">
+				<div class="col-5">
+					{{form_row(form.url,{'label':false,'attr':{'placeholder' : "Url de l'image"}})}}
+				</div>
+				<div class="col-5">
+					{{form_row(form.caption,{'label':false})}}
+				</div>
+				<div class="col-2">
+					<button type="button" class="btn btn-danger del_image" data-block="{{id}}" >X</button>
+				</div>
+
+			{% endblock %}
+
+			{% block javascripts %}
+				<script type="text/javascript">
+
+				//variable globale
+				//nbrs d'entrée images
+				var counter = {{ form.images | length }} ;
+
+				$("#add_image").click(function(){
+
+				  //on récupère le prototype
+				  var tmpl = $("#annonce_images").data("prototype");
+
+				  //console.log(tmpl);
+
+				  //on remplace _name_ par la valeur du counter
+				  tmpl = tmpl.replace(/__name__/g,counter);
+
+				  //console.log(counter);
+
+				  counter=counter +1;
+
+				  //console.log(tmpl);
+
+				  // on ajoute le prototype a la fin du div ID anonce_images
+				  $("#annonce_images").append(tmpl)
+
+				  deleteBlock();
+
+				})
+
+				function deleteBlock() {
+
+					$(".del_image").click(function(){
+
+					var bloc = $(this).data("block");
+
+					$("#"+bloc).remove();
+
+					})					
+				}
+				deleteBlock();
+
+				</script>
+
+			{% endblock %}

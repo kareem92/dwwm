@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Les annonces!{% endblock %}
+
+	{% block body %}
+{#
+{{dump(ads)}}
+#}
+<div class="jumbotron">
+	<h1 class="display-4">Viens à la maison!</h1>
+	<p class="lead">Venez découvrir les plus beaux appartements de la région PACA !</p>
+	<hr class="my-4">
+	<p>Le plus large choix d'appartements en France.</p>
+	<a class="btn btn-primary btn-lg" href="#" role="button">En savoir plus</a>
+
+</div>	
+<h2>Nos appartements</h2>
+<div class="row ml-3" >
+
+	{% for ad in ads %}   		
+		{% include('ad/_ad.html.twig') %}
+	{% endfor %}
+
+</div>
+
+{% endblock %}
